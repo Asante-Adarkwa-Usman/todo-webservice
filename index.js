@@ -19,8 +19,8 @@ const app = express();
 //middleware
 app.use(express.json());
 //port
-const PORT = 4000;
-const db = process.env.DB_URL;
+const PORT = 3000;
+const db = process.env.DB_URL || process.env.PORT;
 
 //mongodb connection
 mongoose.connect(db, {
