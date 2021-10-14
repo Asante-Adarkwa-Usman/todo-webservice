@@ -8,19 +8,22 @@
 // server.listen(4000, () => {
 // console.log('Server running at http://127.0.0.1:4000/');
 // });
+import dotenv from 'dotenv';
 
 import express  from "express";
 import mongoose  from "mongoose";
 import TodoModel from "./schema/todo_shema.js";
 
+dotenv.config();
 const app = express();
 //middleware
 app.use(express.json());
 //port
 const PORT = 4000;
+const db = process.env.DB_URL;
 
 //mongodb connection
-mongoose.connect('mongodb://localhost/Todo_Db', {
+mongoose.connect(db, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 }).then(() => {
@@ -41,7 +44,7 @@ app.get('/todos',async(req, res) => {
     if(todoModel){
         return res.status(200).json({
             status: true,
-            message: 'Todo fetched Successfully',
+            message: 'Todos fetched successfully',
             data: todoModel,
         })
     }else {
