@@ -13,14 +13,18 @@ import dotenv from 'dotenv';
 import express  from "express";
 import mongoose  from "mongoose";
 import TodoModel from "./schema/todo_shema.js";
+import cors from 'cors';
 
 dotenv.config();
 const app = express();
 //middleware
 app.use(express.json());
+//cors
+app.use(cors());
 //port
-const PORT = 3000;
-const db = process.env.DB_URL || process.env.PORT;
+const PORT = 3000|| process.env.PORT;
+const db = process.env.DB_URL ;
+
 
 //mongodb connection
 mongoose.connect(db, {
@@ -39,8 +43,9 @@ return res.status(200).json({
 });
 
 //get all todos
-app.get('/todos',async(req, res) => {
-    const todoModel = await TodoModel.find({});
+app.get('/todos/:status',async(req, res) => {
+    const {status} = req.params;
+    const todoModel = await TodoModel.find({}).where(status).equals(status);
     if(todoModel){
         return res.status(200).json({
             status: true,
